@@ -1,1 +1,25 @@
-{\n  "name": "hr-platform",\n  "version": "1.0.0",\n  "description": "HR Platform backend",\n  "main": "index.js",\n  "scripts": {\n    "test": "echo 'Error: no test specified' && exit 1"\n  },\n  "dependencies": {\n    "express": "^4.17.1"\n  },\n  "devDependencies": {}\n}
+{
+  "name": "hr-platform",
+  "version": "1.0.0",
+  "description": "HR Management Platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo 'Error: no test specified' && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Turanlab/hr-platform.git"
+  },
+  "keywords": [],
+  "author": "Turanlab",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^8.5.1",
+    "jsonwebtoken": "^8.5.1",
+    "bcryptjs": "^2.4.3",
+    "multer": "^1.4.2",
+    "cors": "^2.8.5",
+    "express-rate-limit": "^5.3.0"
+  }
+}
