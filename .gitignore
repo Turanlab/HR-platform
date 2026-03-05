@@ -19,3 +19,10 @@ coverage/
 out/
 .vercel/
 .netlify/
+
+# Uploaded CV files (runtime)
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Lock files (keep package-lock.json but ignore yarn.lock)
+yarn.lock
