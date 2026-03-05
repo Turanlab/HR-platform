@@ -26,18 +26,30 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 // Serve uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Rate limiter for auth
+// Rate limiters
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 20,
   message: { error: 'Too many requests from this IP, please try again after 15 minutes.' }
 });
 
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 200,
+  message: { error: 'Too many requests from this IP, please try again after 15 minutes.' }
+});
+
+const uploadLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 50,
+  message: { error: 'Too many upload requests from this IP, please try again after 15 minutes.' }
+});
+
 // Routes
 app.use('/api/auth', authLimiter, authRoutes);
-app.use('/api/cvs', cvRoutes);
-app.use('/api/candidates', candidateRoutes);
-app.use('/api/admin', adminRoutes);
+app.use('/api/cvs', uploadLimiter, cvRoutes);
+app.use('/api/candidates', apiLimiter, candidateRoutes);
+app.use('/api/admin', apiLimiter, adminRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
