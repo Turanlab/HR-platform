@@ -7,6 +7,7 @@ const useMessageStore = create((set, get) => ({
   currentConversation: null,
   messages: [],
   unreadCount: 0,
+  currentUserId: null,
   loading: false,
   error: null,
 
@@ -64,12 +65,15 @@ const useMessageStore = create((set, get) => ({
   markRead: async (conversationId) => {
     try {
       await messagesAPI.markRead(conversationId);
+      // Get actual unread count for this conversation before zeroing it
+      const conv = get().conversations.find((c) => c.id === parseInt(conversationId));
+      const convUnread = parseInt(conv?.unread_count || 0);
       set((state) => ({
         messages: state.messages.map((m) => ({ ...m, is_read: true })),
         conversations: state.conversations.map((c) =>
           c.id === parseInt(conversationId) ? { ...c, unread_count: 0 } : c
         ),
-        unreadCount: Math.max(0, state.unreadCount - 1)
+        unreadCount: Math.max(0, state.unreadCount - convUnread)
       }));
     } catch {}
   },
@@ -78,9 +82,12 @@ const useMessageStore = create((set, get) => ({
     set((state) => {
       const exists = state.messages.some((m) => m.id === message.id);
       if (exists) return {};
+      // Only increment unread count for messages from other users
+      const currentUser = state.currentUserId;
+      const isFromOther = !currentUser || message.sender_id !== currentUser;
       return {
         messages: [...state.messages, message],
-        unreadCount: state.unreadCount + 1
+        unreadCount: isFromOther ? state.unreadCount + 1 : state.unreadCount,
       };
     });
   },

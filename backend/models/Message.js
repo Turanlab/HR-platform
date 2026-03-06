@@ -1,8 +1,12 @@
 const pool = require('../config/database');
 
+function normalizeParticipants(userId1, userId2) {
+  return [Math.min(userId1, userId2), Math.max(userId1, userId2)];
+}
+
 const Message = {
   async createConversation(participant1_id, participant2_id) {
-    const [p1, p2] = [Math.min(participant1_id, participant2_id), Math.max(participant1_id, participant2_id)];
+    const [p1, p2] = normalizeParticipants(participant1_id, participant2_id);
     const result = await pool.query(
       `INSERT INTO conversations (participant1_id, participant2_id)
        VALUES ($1, $2) RETURNING *`,
@@ -12,8 +16,8 @@ const Message = {
   },
 
   async findOrCreateConversation(userId1, userId2) {
-    const [p1, p2] = [Math.min(userId1, userId2), Math.max(userId1, userId2)];
-    let result = await pool.query(
+    const [p1, p2] = normalizeParticipants(userId1, userId2);
+    const result = await pool.query(
       'SELECT * FROM conversations WHERE participant1_id = $1 AND participant2_id = $2',
       [p1, p2]
     );

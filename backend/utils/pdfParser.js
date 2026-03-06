@@ -20,7 +20,9 @@ const pdfParser = {
 
   async parseDocx(filePath) {
     try {
-      // Try mammoth if available, otherwise fall back to raw buffer read
+      // mammoth provides accurate DOCX text extraction.
+      // Install with: npm install mammoth
+      // Without mammoth, falls back to a basic binary text extraction which may produce imperfect results.
       let text = '';
       try {
         const mammoth = require('mammoth');
