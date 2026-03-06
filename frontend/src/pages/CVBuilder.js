@@ -51,6 +51,8 @@ export default function CVBuilder() {
   const [showTemplates, setShowTemplates] = useState(false);
   const [aiSuggestions, setAiSuggestions] = useState([]);
   const [atsScore, setAtsScore] = useState(null);
+  // Job description used for ATS score calculation — user can paste a target job description here
+  const [jobDescription, setJobDescription] = useState('software engineer position requiring JavaScript, React, problem solving, teamwork');
   const [aiLoading, setAiLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [newSkill, setNewSkill] = useState('');
@@ -141,7 +143,7 @@ export default function CVBuilder() {
     try {
       const [suggestRes, atsRes] = await Promise.allSettled([
         aiAPI.suggestImprovements(cvData),
-        aiAPI.calculateAtsScore(cvData, 'software engineer position requiring JavaScript, React, problem solving, teamwork'),
+        aiAPI.calculateAtsScore(cvData, jobDescription),
       ]);
       if (suggestRes.status === 'fulfilled') setAiSuggestions(suggestRes.value.data.suggestions || []);
       if (atsRes.status === 'fulfilled') setAtsScore(atsRes.value.data.score);
@@ -296,6 +298,18 @@ export default function CVBuilder() {
 
       {/* Right: AI Assistant */}
       <div style={{ width: '280px', padding: '24px 16px', overflowY: 'auto', borderLeft: '1px solid #e5e7eb', background: '#fafafa' }}>
+        <div style={{ marginBottom: '12px' }}>
+          <label style={{ fontSize: '12px', fontWeight: 600, color: '#374151', display: 'block', marginBottom: '4px' }}>
+            Target Job Description (for ATS scoring)
+          </label>
+          <textarea
+            value={jobDescription}
+            onChange={(e) => setJobDescription(e.target.value)}
+            rows={3}
+            placeholder="Paste the job description here to calculate your ATS match score..."
+            style={{ width: '100%', padding: '8px', border: '1px solid #d1d5db', borderRadius: '6px', fontSize: '12px', resize: 'vertical', boxSizing: 'border-box' }}
+          />
+        </div>
         <AIAssistant suggestions={aiSuggestions} atsScore={atsScore} isLoading={aiLoading} />
       </div>
     </div>

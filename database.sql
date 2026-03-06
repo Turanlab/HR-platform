@@ -5,6 +5,9 @@
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
 -- Users table
+-- MIGRATION NOTE: default role changed from 'recruiter' to 'candidate'.
+-- Existing 'recruiter' users are unaffected; only new self-registrations default to 'candidate'.
+-- Staff/recruiter accounts should be created by an admin with role='recruiter'.
 CREATE TABLE IF NOT EXISTS users (
     id            SERIAL PRIMARY KEY,
     email         VARCHAR(255) UNIQUE NOT NULL,

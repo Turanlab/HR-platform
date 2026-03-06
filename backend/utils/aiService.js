@@ -2,6 +2,9 @@ const AILog = require('../models/AILog');
 
 let openaiClient = null;
 const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-4';
+// Pricing per 1K tokens — update if OpenAI changes rates or you switch models
+const PROMPT_TOKEN_COST = parseFloat(process.env.OPENAI_PROMPT_TOKEN_COST || '0.03');
+const COMPLETION_TOKEN_COST = parseFloat(process.env.OPENAI_COMPLETION_TOKEN_COST || '0.06');
 
 function getClient() {
   if (!process.env.OPENAI_API_KEY) return null;
@@ -28,7 +31,7 @@ async function callOpenAI(prompt, userId, action, systemPrompt = 'You are an exp
   const usage = response.usage || {};
   const promptTokens = usage.prompt_tokens || 0;
   const completionTokens = usage.completion_tokens || 0;
-  const cost = (promptTokens / 1000) * 0.03 + (completionTokens / 1000) * 0.06;
+  const cost = (promptTokens / 1000) * PROMPT_TOKEN_COST + (completionTokens / 1000) * COMPLETION_TOKEN_COST;
 
   if (userId) {
     await AILog.create({

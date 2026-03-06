@@ -51,7 +51,9 @@ const messageController = {
       // Send email notification asynchronously (non-blocking)
       User.findById(receiver_id).then((receiver) => {
         if (receiver) {
-          emailService.sendMessageNotification(receiver.email, req.user.email, content.substring(0, 100)).catch(() => {});
+          emailService.sendMessageNotification(receiver.email, req.user.email, content.substring(0, 100)).catch((err) => {
+            console.error('Email notification failed:', err.message);
+          });
         }
       }).catch(() => {});
 

@@ -11,6 +11,8 @@ const useMessageStore = create((set, get) => ({
   loading: false,
   error: null,
 
+  setCurrentUserId: (id) => set({ currentUserId: id }),
+
   fetchConversations: async () => {
     set({ loading: true });
     try {

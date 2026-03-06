@@ -52,7 +52,7 @@ export default function Home() {
         <div className="nav-links">
           <a href="#features">Features</a>
           <a href="#templates">Templates</a>
-          <button style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 'inherit', color: 'inherit' }} onClick={() => navigate('/pricing')}>Pricing</button>
+          <button style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 'inherit', color: 'inherit' }} onClick={() => navigate('/pricing')} role="link" aria-label="Go to Pricing page">Pricing</button>
           <a href="#faq">FAQ</a>
         </div>
         <div className="nav-cta">
@@ -222,8 +222,8 @@ export default function Home() {
           <div className="footer-col">
             <h4>Product</h4>
             <a href="#features">Features</a>
-            <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'inherit', fontSize: 'inherit' }} onClick={() => navigate('/pricing')}>Pricing</button>
-            <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'inherit', fontSize: 'inherit' }} onClick={() => navigate('/templates')}>Templates</button>
+            <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'inherit', fontSize: 'inherit' }} onClick={() => navigate('/pricing')} role="link" aria-label="Go to Pricing page">Pricing</button>
+            <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'inherit', fontSize: 'inherit' }} onClick={() => navigate('/templates')} role="link" aria-label="Go to Templates page">Templates</button>
           </div>
           <div className="footer-col">
             <h4>Platform</h4>
