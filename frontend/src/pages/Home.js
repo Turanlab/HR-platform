@@ -1,38 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const features = [
-  { icon: '📤', title: 'Bulk CV Upload', desc: 'Upload hundreds of CVs at once. Support for PDF and DOCX formats with automatic metadata extraction.' },
-  { icon: '🔍', title: 'Smart Search', desc: 'Full-text search across skills, experience, location and more. Find the perfect candidate instantly.' },
-  { icon: '👥', title: 'Team Collaboration', desc: 'Multiple recruiters can work simultaneously. Role-based access for admins, recruiters and HR managers.' },
-  { icon: '📊', title: 'Analytics Dashboard', desc: 'Track hiring metrics, team performance and pipeline health with beautiful charts and KPI cards.' },
+  { icon: '🤖', title: 'AI-Powered CV Builder', desc: 'Build professional CVs with real-time AI suggestions, grammar checks, and ATS optimization to land more interviews.' },
+  { icon: '🎨', title: '20+ Premium Templates', desc: 'Choose from beautifully designed templates — Professional, Creative, Academic, and more. Updated regularly.' },
+  { icon: '📊', title: 'ATS Score Checker', desc: 'Get instant feedback on how well your CV will perform against Applicant Tracking Systems used by top companies.' },
+  { icon: '💬', title: 'Real-time Messaging', desc: 'Connect directly with recruiters and companies via built-in messaging. Get notified instantly.' },
+  { icon: '🏢', title: 'Company Portal', desc: 'Companies can search candidates by skills, location and experience. Advanced filters for precision hiring.' },
   { icon: '🔒', title: 'Enterprise Security', desc: 'JWT authentication, rate limiting, audit logs and role-based access control keep your data safe.' },
-  { icon: '⚡', title: 'High Performance', desc: 'Optimized for thousands of CVs. Database indexing and pagination ensure fast response times.' },
 ];
 
 const steps = [
-  { num: 1, title: 'Create Account', desc: 'Register your HR team. Assign roles — Admin, HR Manager or Recruiter — to control access.' },
-  { num: 2, title: 'Upload CVs', desc: 'Bulk upload candidate CVs in PDF or DOCX. Profiles are created automatically for each file.' },
-  { num: 3, title: 'Search & Hire', desc: 'Use powerful filters to find candidates by skills, experience and location. Export to CSV.' },
+  { num: 1, title: 'Create Your Account', desc: 'Sign up for free in seconds. No credit card required to get started with basic features.' },
+  { num: 2, title: 'Build Your CV', desc: 'Use our AI-powered CV builder with live preview. Pick a template, fill in your details, get AI suggestions.' },
+  { num: 3, title: 'Get Hired', desc: 'Export your polished CV, match it with jobs, and connect with companies directly through messaging.' },
 ];
 
-const plans = [
-  { name: 'Free', price: '$0', desc: 'Perfect for small teams', features: ['Up to 100 CVs', '3 Team members', 'Basic search', 'Email support'], featured: false },
-  { name: 'Team', price: '$49', desc: 'For growing HR teams', features: ['Up to 5,000 CVs', '15 Team members', 'Advanced search & filters', 'Audit logs', 'Priority support', 'CSV export'], featured: true },
-  { name: 'Enterprise', price: 'Custom', desc: 'For large organizations', features: ['Unlimited CVs', 'Unlimited users', 'Custom integrations', 'Dedicated SLA', 'SSO / SAML', 'Custom branding'], featured: false },
+const templatePreviews = [
+  { name: 'Classic Professional', gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', category: 'Professional' },
+  { name: 'Modern Minimalist', gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', category: 'Simple' },
+  { name: 'Creative Blue', gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', category: 'Creative' },
+  { name: 'Tech Developer', gradient: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)', category: 'Professional' },
 ];
 
 const faqs = [
-  { q: 'What file formats are supported for CV upload?', a: 'We support PDF (.pdf) and Microsoft Word (.docx, .doc) files up to 10MB each.' },
-  { q: 'How does bulk upload work?', a: 'Select multiple files at once. Candidate profiles are created automatically using the filename as the candidate name. You can edit profiles afterwards.' },
-  { q: 'Is my data secure?', a: 'Yes. All data is stored securely in a PostgreSQL database. JWT tokens protect all API endpoints. Audit logs track every action.' },
-  { q: 'Can I export candidate data?', a: 'Yes. Admins and HR managers can export the full candidate list as a CSV file for use in other tools.' },
-  { q: 'What roles are available?', a: 'Three roles: Admin (full access), HR Manager (can manage candidates and CVs), and Recruiter (can view and search).' },
+  { q: 'Is the CV builder really free?', a: 'Yes! Our free plan includes 3 templates and 1 active CV. Upgrade to Premium for unlimited templates and AI features.' },
+  { q: 'How does the AI assistance work?', a: 'Our AI analyzes your CV content and provides suggestions for improvements, grammar corrections, and keyword optimization for ATS systems.' },
+  { q: 'Can I export my CV as PDF?', a: 'Yes. All plans include HTML export. Premium plans offer additional export formats. You can print the HTML to PDF using your browser.' },
+  { q: 'How does company search work?', a: 'Companies on our platform can search candidates by skills, experience, location, and salary expectations with advanced filtering.' },
+  { q: 'Is my data secure?', a: 'Absolutely. Your data is encrypted, stored securely, and never shared with third parties without your consent.' },
 ];
 
 export default function Home() {
   const navigate = useNavigate();
   const [openFaq, setOpenFaq] = useState(null);
+  const [activeTemplate, setActiveTemplate] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => setActiveTemplate((i) => (i + 1) % templatePreviews.length), 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="landing">
@@ -44,38 +51,38 @@ export default function Home() {
         </div>
         <div className="nav-links">
           <a href="#features">Features</a>
-          <a href="#how-it-works">How it Works</a>
-          <a href="#pricing">Pricing</a>
+          <a href="#templates">Templates</a>
+          <button style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 'inherit', color: 'inherit' }} onClick={() => navigate('/pricing')}>Pricing</button>
           <a href="#faq">FAQ</a>
         </div>
         <div className="nav-cta">
           <button className="btn btn-secondary btn-sm" onClick={() => navigate('/login')}>Login</button>
-          <button className="btn btn-primary btn-sm" onClick={() => navigate('/register')}>Get Started</button>
+          <button className="btn btn-primary btn-sm" onClick={() => navigate('/register')}>Get Started Free</button>
         </div>
       </nav>
 
       {/* Hero */}
       <section className="hero">
         <div className="hero-content">
-          <div className="hero-badge">🚀 Production-Ready HR Platform</div>
+          <div className="hero-badge">🚀 Now with AI-Powered CV Builder</div>
           <h1 className="hero-title">
-            Hire Smarter with<br />
-            <span className="hero-gradient">AI-Powered CV Management</span>
+            Build Your Dream CV<br />
+            <span className="hero-gradient">Land Your Dream Job</span>
           </h1>
           <p className="hero-subtitle">
-            Upload thousands of CVs, search candidates instantly, and collaborate with your entire HR team — all in one beautiful platform.
+            Create stunning, ATS-optimized CVs with AI assistance. Choose from 20+ professional templates and connect directly with top companies.
           </p>
           <div className="hero-buttons">
             <button className="btn btn-primary btn-lg" onClick={() => navigate('/register')}>
-              Start for Free →
+              Get Started Free →
             </button>
-            <button className="btn btn-secondary btn-lg" onClick={() => navigate('/login')}>
-              View Demo
+            <button className="btn btn-secondary btn-lg" onClick={() => navigate('/templates')}>
+              View Templates
             </button>
           </div>
         </div>
         <div className="hero-stats">
-          {[['10,000+', 'CVs Processed'], ['99.9%', 'Uptime SLA'], ['3x', 'Faster Hiring'], ['50+', 'HR Teams']].map(([val, label]) => (
+          {[['20+', 'CV Templates'], ['AI', 'Powered Builder'], ['ATS', 'Optimized'], ['Real-time', 'Messaging']].map(([val, label]) => (
             <div key={label} className="hero-stat">
               <div className="hero-stat-value">{val}</div>
               <div className="hero-stat-label">{label}</div>
@@ -87,8 +94,8 @@ export default function Home() {
       {/* Features */}
       <section className="section" id="features" style={{ background: 'var(--bg-secondary)' }}>
         <div className="section-header">
-          <h2 className="section-title">Everything Your HR Team Needs</h2>
-          <p className="section-subtitle">A complete platform for managing candidates, CVs and your recruitment pipeline.</p>
+          <h2 className="section-title">Everything You Need to Get Hired</h2>
+          <p className="section-subtitle">A complete platform for job seekers and companies alike.</p>
         </div>
         <div className="features-grid">
           {features.map(f => (
@@ -101,11 +108,45 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How it works */}
-      <section className="section" id="how-it-works">
+      {/* Template preview */}
+      <section className="section" id="templates">
         <div className="section-header">
-          <h2 className="section-title">Up and Running in Minutes</h2>
-          <p className="section-subtitle">Three simple steps to transform your hiring process.</p>
+          <h2 className="section-title">Professional Templates</h2>
+          <p className="section-subtitle">Hand-crafted designs for every industry and career level.</p>
+        </div>
+        <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '32px' }}>
+          {templatePreviews.map((t, i) => (
+            <div
+              key={i}
+              onClick={() => setActiveTemplate(i)}
+              style={{
+                width: '160px', height: '200px', borderRadius: '12px', background: t.gradient, cursor: 'pointer',
+                border: activeTemplate === i ? '3px solid #4F46E5' : '3px solid transparent',
+                transform: activeTemplate === i ? 'scale(1.05)' : 'scale(1)',
+                transition: 'all 0.3s', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', padding: '12px',
+                boxShadow: activeTemplate === i ? '0 10px 30px rgba(79,70,229,0.3)' : '0 4px 12px rgba(0,0,0,0.1)',
+              }}
+            >
+              <span style={{ color: '#fff', fontSize: '13px', fontWeight: 600, textAlign: 'center', textShadow: '0 1px 3px rgba(0,0,0,0.3)' }}>{t.name}</span>
+              <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '11px' }}>{t.category}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{ textAlign: 'center' }}>
+          <button
+            onClick={() => navigate('/templates')}
+            style={{ padding: '12px 32px', background: 'linear-gradient(135deg, #4F46E5 0%, #7c3aed 100%)', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: 600, cursor: 'pointer' }}
+          >
+            View All 20+ Templates →
+          </button>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="section" id="how-it-works" style={{ background: 'var(--bg-secondary)' }}>
+        <div className="section-header">
+          <h2 className="section-title">Get Hired in 3 Simple Steps</h2>
+          <p className="section-subtitle">From registration to your dream job — all in one platform.</p>
         </div>
         <div className="steps-grid">
           {steps.map(s => (
@@ -118,36 +159,40 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pricing */}
-      <section className="section" id="pricing" style={{ background: 'var(--bg-secondary)' }}>
+      {/* Pricing teaser */}
+      <section className="section" id="pricing">
         <div className="section-header">
-          <h2 className="section-title">Simple, Transparent Pricing</h2>
-          <p className="section-subtitle">Choose the plan that fits your team. Upgrade or downgrade at any time.</p>
+          <h2 className="section-title">Pricing for Everyone</h2>
+          <p className="section-subtitle">Start free, upgrade when you're ready.</p>
         </div>
-        <div className="pricing-grid">
-          {plans.map(p => (
-            <div key={p.name} className={`pricing-card ${p.featured ? 'featured' : ''}`}>
-              {p.featured && <div className="pricing-badge">Most Popular</div>}
-              <div className="pricing-name">{p.name}</div>
-              <div className="pricing-price">{p.price}<span>/month</span></div>
-              <p className="pricing-desc">{p.desc}</p>
-              <ul className="pricing-features">
-                {p.features.map(f => <li key={f}>{f}</li>)}
+        <div style={{ display: 'flex', gap: '24px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '32px' }}>
+          {[
+            { name: 'Free', price: '$0', features: ['3 CV templates', 'Basic CV builder', '1 active CV', 'PDF export'], cta: 'Start Free', primary: false },
+            { name: 'Premium', price: '$9.99/mo', features: ['All 20+ templates', 'AI grammar check', 'ATS score', 'Cover letter generator'], cta: 'Go Premium', primary: true },
+            { name: 'Professional', price: '$19.99/mo', features: ['Unlimited CVs', 'AI skill extraction', 'Job match scoring', 'Advanced analytics'], cta: 'Go Pro', primary: false },
+          ].map((p) => (
+            <div key={p.name} style={{ background: '#fff', borderRadius: '16px', padding: '28px', border: p.primary ? '2px solid #4F46E5' : '1px solid #e5e7eb', minWidth: '220px', maxWidth: '280px', flex: 1, boxShadow: p.primary ? '0 8px 30px rgba(79,70,229,0.15)' : '0 2px 8px rgba(0,0,0,0.06)' }}>
+              {p.primary && <div style={{ background: '#4F46E5', color: '#fff', fontSize: '11px', fontWeight: 700, padding: '3px 10px', borderRadius: '10px', display: 'inline-block', marginBottom: '8px' }}>MOST POPULAR</div>}
+              <h3 style={{ margin: '0 0 4px', fontSize: '18px', fontWeight: 700, color: '#1f2937' }}>{p.name}</h3>
+              <div style={{ fontSize: '22px', fontWeight: 800, color: '#4F46E5', margin: '8px 0 16px' }}>{p.price}</div>
+              <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 20px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {p.features.map((f) => <li key={f} style={{ fontSize: '13px', color: '#374151' }}>✓ {f}</li>)}
               </ul>
-              <button
-                className={`btn btn-${p.featured ? 'primary' : 'secondary'}`}
-                style={{ width: '100%' }}
-                onClick={() => navigate('/register')}
-              >
-                Get Started
+              <button onClick={() => navigate('/register')} style={{ width: '100%', padding: '10px', background: p.primary ? '#4F46E5' : '#f9fafb', color: p.primary ? '#fff' : '#374151', border: `1px solid ${p.primary ? '#4F46E5' : '#d1d5db'}`, borderRadius: '8px', fontWeight: 600, cursor: 'pointer', fontSize: '14px' }}>
+                {p.cta}
               </button>
             </div>
           ))}
         </div>
+        <div style={{ textAlign: 'center' }}>
+          <button onClick={() => navigate('/pricing')} style={{ background: 'none', border: 'none', color: '#4F46E5', cursor: 'pointer', fontSize: '14px', fontWeight: 500, textDecoration: 'underline' }}>
+            See full pricing details →
+          </button>
+        </div>
       </section>
 
       {/* FAQ */}
-      <section className="section" id="faq">
+      <section className="section" id="faq" style={{ background: 'var(--bg-secondary)' }}>
         <div className="section-header">
           <h2 className="section-title">Frequently Asked Questions</h2>
         </div>
@@ -172,19 +217,19 @@ export default function Home() {
               <div className="nav-logo-icon" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, color: 'white' }}>🏢</div>
               HR Platform
             </div>
-            <p>A complete, production-ready HR platform for managing candidates, CVs and recruitment workflows.</p>
+            <p>Build stunning CVs, connect with companies, and land your dream job with AI-powered tools.</p>
           </div>
           <div className="footer-col">
             <h4>Product</h4>
             <a href="#features">Features</a>
-            <a href="#pricing">Pricing</a>
-            <a href="#faq">FAQ</a>
+            <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'inherit', fontSize: 'inherit' }} onClick={() => navigate('/pricing')}>Pricing</button>
+            <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'inherit', fontSize: 'inherit' }} onClick={() => navigate('/templates')}>Templates</button>
           </div>
           <div className="footer-col">
             <h4>Platform</h4>
-            <a href="/login">Login</a>
-            <a href="/register">Register</a>
-            <a href="/admin/dashboard">Dashboard</a>
+            <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'inherit', fontSize: 'inherit' }} onClick={() => navigate('/login')}>Login</button>
+            <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'inherit', fontSize: 'inherit' }} onClick={() => navigate('/register')}>Register</button>
+            <button style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'inherit', fontSize: 'inherit' }} onClick={() => navigate('/cv-builder')}>CV Builder</button>
           </div>
           <div className="footer-col">
             <h4>Legal</h4>
@@ -195,7 +240,7 @@ export default function Home() {
         </div>
         <div className="footer-bottom">
           <p>© {new Date().getFullYear()} HR Platform. All rights reserved.</p>
-          <p>Built with React & Node.js</p>
+          <p>Built with React, Node.js & AI</p>
         </div>
       </footer>
     </div>
